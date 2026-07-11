@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>FTF Values - Custom Edition</title>
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="FTF Values">
+    <meta name="apple-mobile-web-app-title" content="FTF Values">
+    <meta name="theme-color" content="#0f1117">
+    <meta name="msapplication-navbutton-color" content="#0f1117">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link rel="icon" sizes="192x192" href="https://via.placeholder.com/192">
+    <link rel="apple-touch-icon" href="https://via.placeholder.com/192">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        /* Base & Colors Reset */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #0f1117;
+            color: #ffffff;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 12px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Top Header Navigation style FTF */
+        .ftf-header {
+            max-width: 1300px;
+            margin: 0 auto 12px auto;
+            background: #161920;
+            border-bottom: 1px solid #232836;
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 6px;
+        }
+
+        .ftf-header-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ftf-header-logo h1 {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: #ffffff;
+        }
+
+        .ftf-header-logo span {
+            color: #ffb830;
+        }
+
+        .ftf-nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .ftf-nav-item {
+            font-size: 13px;
+            font-weight: 600;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: color 0.2s;
+            text-transform: uppercase;
+        }
+
+        .ftf-nav-item.active {
+            color: #ffb830;
+        }
+
+        /* Controls Toggle Area */
+        .toolbar-container {
+            max-width: 1300px;
+            margin: 0 auto 12px auto;
+            background: #161920;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            border: 1px solid #1e222b;
+        }
+
+        .ui-btn {
+            background: #222733;
+            color: #cbd5e1;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid #2d3445;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .ui-btn:hover {
+            background: #2d3445;
+            color: #fff;
+        }
+
+        .btn-salvar-galeria {
+            background: #ffb830;
+            color: #000;
+            border: none;
+        }
+
+        .btn-salvar-galeria:hover {
+            background: #e6a422;
+            color: #000;
+        }
+
+        /* Dashboard Overview Area style FTF */
+        .ftf-dashboard {
+            max-width: 1300px;
+            margin: 0 auto 12px auto;
+            background: #161920;
+            border-radius: 6px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            border: 1px solid #1e222b;
+        }
+
+        .ftf-dash-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .ftf-dash-block {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ftf-dash-label {
+            font-size: 10px;
+            color: #64748b;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .ftf-dash-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .ftf-dash-value span {
+            color: #ffb830;
+        }
+
+        .dash-date-input {
+            background: #0f1117;
+            color: #94a3b8;
+            border: 1px solid #232836;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            outline: none;
+            width: 120px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Main Search & Sorting Inputs Row */
+        .search-wrapper {
+            max-width: 1300px;
+            margin: 0 auto 12px auto;
+            display: flex;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .input-style {
+            background: #161920;
+            color: #fff;
+            border: 1px solid #232836;
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-style:focus {
+            border-color: #ffb830;
+        }
+
+        #barraPesquisa {
+            flex: 1;
+        }
+
+        #ordenacaoLista {
+            width: 200px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #94a3b8;
+        }
+
+        /* Filter Tab Buttons Style */
+        .btn-aba-container, .event-filter-wrapper, .subtabs-container {
+            max-width: 1300px;
+            margin: 0 auto 8px auto;
+            background: #161920;
+            padding: 6px;
+            border-radius: 6px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            align-items: center;
+            border: 1px solid #1e222b;
+        }
+
+        .btn-aba, .btn-subtab {
+            background: transparent;
+            color: #94a3b8;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            transition: all 0.15s;
+        }
+
+        .btn-aba:hover, .btn-subtab:hover {
+            color: #fff;
+            background: #202633;
+        }
+
+        .btn-aba.active, .btn-subtab.active {
+            background: #ffb830;
+            color: #000 !important;
+            font-weight: 700;
+        }
+
+        .event-filter-wrapper label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            padding-left: 6px;
+        }
+
+        .select-event {
+            background: #0f1117;
+            color: #fff;
+            border: 1px solid #232836;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Event Filter Buttons (fixed: this is the class actually used in the HTML) */
+        .event-filter-container {
+            max-width: 1300px;
+            margin: 0 auto 8px auto;
+            background: #161920;
+            padding: 6px;
+            border-radius: 6px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            align-items: center;
+            border: 1px solid #1e222b;
+        }
+
+        .event-btn {
+            background: transparent;
+            color: #94a3b8;
+            border: 1px solid #232836;
+            border-radius: 4px;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.15s;
+        }
+
+        .event-btn img {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .event-btn:hover {
+            background: #202633;
+            color: #fff;
+        }
+
+        .event-btn.active {
+            background: #ffb830;
+            border-color: #ffb830;
+            color: #000;
+            font-weight: 700;
+        }
+
+        /* Item Creator Layout Panel Form */
+        #criador-form {
+            background-color: #161920;
+            padding: 14px;
+            border-radius: 6px;
+            border: 1px solid #232836;
+            max-width: 1300px;
+            margin: 0 auto 12px auto;
+        }
+
+        .form-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #232836;
+            padding-bottom: 6px;
+        }
+
+        .form-tab-btn {
+            background: transparent;
+            color: #94a3b8;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            border-radius: 4px;
+        }
+
+        .form-tab-btn.active {
+            background: #222733;
+            color: #ffb830;
+        }
+
+        .form-section h3 {
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            color: #64748b;
+            font-size: 11px;
+            margin-bottom: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .form-input-full {
+            width: 100%;
+        }
+
+        .btn-submit {
+            grid-column: 1 / -1;
+            padding: 10px;
+            background: #ffb830;
+            color: black;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+            margin-top: 6px;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: #e6a422;
+        }
+
+        /* Section Category Title Header Layout */
+        #titulo-secao {
+            max-width: 1300px;
+            margin: 16px auto 10px auto;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        #titulo-secao::before {
+            content: '';
+            display: inline-block;
+            width: 3px;
+            height: 14px;
+            background: #ffb830;
+            border-radius: 2px;
+        }
+
+        /* Strict FTF Cards Container System Grid */
+        #container-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 8px;
+            max-width: 1300px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Strict Official FTF Card UI Style Concept */
+        .ftf-item-card {
+            background-color: #14171f;
+            border: 1px solid #1f2430;
+            border-radius: 5px;
+            padding: 5px;
+            width: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: transform 0.15s;
+            overflow: hidden;
+        }
+
+        /* 60% Card Height Image Container Slot */
+        .ftf-card-img-wrapper {
+            height: 120px;
+            background: #0f1117;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid #1a1e26;
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        .ftf-card-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .txt-posicao-automatica {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            background: rgba(15, 17, 23, 0.85);
+            color: #64748b;
+            font-weight: 800;
+            border-radius: 3px;
+            font-size: 9px;
+            padding: 1px 4px;
+            border: 1px solid #232836;
+            z-index: 2;
+        }
+
+        .ftf-card-info {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            padding: 1px 2px;
+        }
+
+        .ftf-item-name {
+            margin: 0;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+
+        .ftf-item-rarity {
+            font-size: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-top: 1px;
+            margin-bottom: 4px;
+            letter-spacing: 0.3px;
+        }
+
+        /* Core Values Layout Elements Split */
+        .ftf-value-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 4px;
+        }
+
+        .ftf-value-label {
+            font-size: 7px;
+            color: #475569;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .box-valor-dinamico {
+            font-size: 16px;
+            font-weight: 900;
+            color: #ffb830;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .txt-estabilidade {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 8px;
+            font-weight: 700;
+            background: #161a24;
+            border: 1px solid #222938;
+            height: 16px;
+        }
+
+        .txt-estabilidade svg {
+            width: 10px;
+            height: 10px;
+            flex: none;
+        }
+
+        /* Status & Demand Rows */
+        .box-badge-status {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 4px;
+            min-height: 12px;
+        }
+
+        .ftf-badge {
+            font-size: 7px;
+            font-weight: 800;
+            padding: 1px 4px;
+            border-radius: 2px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .ftf-demand-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #1a1e26;
+            padding-top: 4px;
+            margin-top: 2px;
+        }
+
+        .txt-demanda-estrelas {
+            display: flex;
+            gap: 0.5px;
+            align-items: center;
+        }
+
+        /* Action Configuration Controls Layer */
+        .btn-acoes-card {
+            margin-top: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            border-top: 1px dashed #232836;
+            padding-top: 4px;
+        }
+
+        .btn-acoes-card-row {
+            display: flex;
+            gap: 3px;
+        }
+
+        .btn-acoes-card button {
+            background: #1c202b;
+            color: #94a3b8;
+            border: 1px solid #282f40;
+            font-size: 9px;
+            padding: 3px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-acoes-card button:hover {
+            background: #282f40;
+            color: #fff;
+        }
+
+        .btn-deletar {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(15,17,23,0.8);
+            border: 1px solid #232836;
+            color: #ef4444;
+            font-size: 8px;
+            width: 14px;
+            height: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* High Compact Print Mode (Forced 16 Col Grid View) */
+        .hide-mode .ftf-header,
+        .hide-mode #criador-form,
+        .hide-mode .btn-aba-container,
+        .hide-mode #btn-exportar-container,
+        .hide-mode #search-container,
+        .hide-mode .btn-deletar,
+        .hide-mode .btn-acoes-card,
+        .hide-mode #btn-limpar-tudo,
+        .hide-mode .subtabs-container,
+        .hide-mode .event-filter-wrapper,
+        .hide-mode .event-filter-container,
+        .hide-mode .toolbar-container { display: none !important; }
+
+        .hide-mode #container-cards {
+            grid-template-columns: repeat(16, 1fr) !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            gap: 4px !important;
+        }
+
+        .hide-mode .ftf-item-card {
+            padding: 3px !important;
+        }
+
+        .hide-mode .ftf-card-img-wrapper {
+            height: 75px !important;
+        }
+
+        .hide-mode .ftf-item-name {
+            font-size: 9px !important;
+        }
+
+        .hide-mode .box-valor-dinamico {
+            font-size: 12px !important;
+        }
+
+        .hide-mode .txt-estabilidade {
+            font-size: 6.5px !important;
+            padding: 1px 2px !important;
+            height: 12px !important;
+        }
+
+        .ocultar-controles-cards .btn-acoes-card,
+        .ocultar-controles-cards .btn-deletar {
+            display: none !important;
+        }
+
+        /* Utilities */
+        hr {
+            display: none;
+        }
+
+        #btn-exportar-container {
+            max-width: 1300px;
+            margin: 0 auto 12px auto;
+            text-align: right;
+        }
+
+        /* Mobile Optimization Rules */
+        @media (max-width: 640px) {
+            #container-cards {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 4px;
+            }
+            .ftf-header-logo h1 { font-size: 14px; }
+            .ftf-nav-links { gap: 8px; }
+            .ftf-nav-item { font-size: 11px; }
+            .ftf-card-img-wrapper { height: 95px; }
+        }
+    </style>
+</head>
+<body id="capture-area">
+
+    <div class="ftf-header">
+        <div class="ftf-header-logo">
+            <h1>FTF <span>VALUES</span></h1>
+        </div>
+        <div class="ftf-nav-links">
+            <div class="ftf-nav-item" onclick="filtrarRaridade('legendary')">Marretas</div>
+            <div class="ftf-nav-item" onclick="filtrarSubcategoria('bundles')">Bundles</div>
+            <div class="ftf-nav-item active">Custom List</div>
+        </div>
+    </div>
+
+    <div class="toolbar-container" id="toolbar-menu">
+        <div>
+            <button id="togglePrintBtn" class="ui-btn" onclick="togglePrintMode()">Modo Print</button>
+            <button id="toggleControlesBtn" class="ui-btn" onclick="toggleControlesCards()">Ocultar Controles</button>
+            <button class="ui-btn btn-salvar-galeria" onclick="salvarNaGaleria()">📥 Exportar Imagem</button>
+        </div>
+        <div>
+            <button id="btn-limpar-tudo" class="ui-btn" style="border-color: #ef4444; color: #ef4444;" onclick="resetarParaPadraoCodigo()">Restaurar Valores Padrão</button>
+        </div>
+    </div>
+
+    <div class="search-wrapper" id="search-container">
+        <input type="text" id="barraPesquisa" class="input-style" placeholder="Search items..." oninput="carregarCardsSalvos()">
+        <select id="ordenacaoLista" class="input-style" onchange="ordenarEAtualizar()">
+            <option value="padrao">🔢 Ordem Padrão</option>
+            <option value="valor-alto">📈 Value (High to Low)</option>
+            <option value="valor-baixo">📉 Value (Low to High)</option>
+            <option value="nome-az">🔤 Name (A-Z)</option>
+            <option value="nome-za">🔤 Name (Z-A)</option>
+        </select>
+    </div>
+
+    <div id="criador-form">
+        <div class="form-tabs">
+            <button class="form-tab-btn active" id="tab-unico" onclick="mudarAbaForm('unico')">Individual Card</button>
+            <button class="form-tab-btn" id="tab-massa" onclick="mudarAbaForm('massa')">Adicionar Links Extra (Massa)</button>
+        </div>
+
+        <div id="form-individual" class="form-section">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Nome do Item</label>
+                    <input type="text" id="nomeItem" class="input-style" placeholder="Ex: Cookie Mallet">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Link da Imagem URL</label>
+                    <input type="text" id="linkImagem" class="input-style" placeholder="https://i.postimg.cc/...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Valor (FV)</label>
+                    <input type="text" id="valorItem" class="input-style" placeholder="Ex: 45">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Evento</label>
+                    <input type="text" id="eventoItem" class="input-style" placeholder="Ex: Halloween, Christmas">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Raridade</label>
+                    <select id="raridadeItem" class="input-style">
+                        <option value="legendary">👑 Legendary</option>
+                        <option value="epics">✨ Epic</option>
+                        <option value="rares">💎 Rare</option>
+                        <option value="commons">🍃 Common</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Sub-Category Tier Tipo</label>
+                    <select id="tipoItem" class="input-style">
+                        <option value="normal">Normal (Com Gema/Par)</option>
+                        <option value="unique">Unique (Sem Gema ou Sem Marreta)</option>
+                        <option value="bundles">Bundles (Duplas, Trios, Sub-marretas)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Item Novo (Update Store)</label>
+                    <select id="recenteItem" class="input-style">
+                        <option value="nao" selected>Não</option>
+                        <option value="sim">Sim (New Items)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Demanda (Stars)</label>
+                    <select id="demandaNota" class="input-style">
+                        <option value="5">5 ⭐️⭐️⭐️⭐️⭐️</option>
+                        <option value="4.5">4.5</option>
+                        <option value="4">4</option>
+                        <option value="3.5">3.5</option>
+                        <option value="3">3</option>
+                        <option value="2.5">2.5</option>
+                        <option value="2">2</option>
+                        <option value="1.5">1.5</option>
+                        <option value="1">1</option>
+                        <option value="0.5">0.5</option>
+                        <option value="0">0</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Change in Value (Tendência)</label>
+                    <select id="tendenciaValor" class="input-style">
+                        <option value="none">Estável</option>
+                        <option value="subiu">Subiu (↑ Verde)</option>
+                        <option value="caiu">Caiu (↓ Vermelho)</option>
+                        <option value="corrigido">Corrigido (* Amarelo)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status Item Badge</label>
+                    <select id="statusItem" class="input-style">
+                        <option value="none">Nenhum</option>
+                        <option value="overpaid">Overpaid For</option>
+                        <option value="underpaid">Underpaid For</option>
+                        <option value="niche">Niche</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Item Stability</label>
+                    <select id="estabilidadeItem" class="input-style">
+                        <option value="Rising">Rising</option>
+                        <option value="Doing Well">Doing Well</option>
+                        <option value="Improving">Improving</option>
+                        <option value="Stable" selected>Stable</option>
+                        <option value="Fluctuating">Fluctuating</option>
+                        <option value="Struggling">Struggling</option>
+                        <option value="Receding">Receding</option>
+                        <option value="Dropping">Dropping</option>
+                    </select>
+                </div>
+            </div>
+            <button type="button" class="btn-submit" onclick="criarNovoCard()">Adicionar Item Customizado ✨</button>
+        </div>
+
+        <div id="form-massa" class="form-section" style="display: none;">
+            <h3>Importação em Bloco</h3>
+            <textarea id="listaLinksMassa" class="input-style form-input-full" rows="6" placeholder="Cole uma lista de URLs separadas por quebra de linha..." style="resize: vertical; font-family: monospace; font-size: 11px;"></textarea>
+            <button type="button" class="btn-submit" style="background: #2ed573; color: #fff;" onclick="importarLinksEmMassa()">Injetar Links Extra 🚀</button>
+        </div>
+    </div>
+
+    <div class="btn-aba-container">
+        <button class="btn-aba active" id="aba-legendary" onclick="filtrarRaridade('legendary')">Legendary Items</button>
+        <button class="btn-aba" id="aba-epics" onclick="filtrarRaridade('epics')">Epic Items</button>
+        <button class="btn-aba" id="aba-rares" onclick="filtrarRaridade('rares')">Rare Items</button>
+        <button class="btn-aba" id="aba-commons" onclick="filtrarRaridade('commons')">Common Items</button>
+    </div>
+
+    <div class="subtabs-container">
+        <button class="btn-subtab active" id="sub-todos" onclick="filtrarSubcategoria('todos')">All</button>
+        <button class="btn-subtab" id="sub-recentes" onclick="filtrarSubcategoria('recentes')">New Items</button>
+        <button class="btn-subtab" id="sub-unicos" onclick="filtrarSubcategoria('unicos')">Unique</button>
+        <button class="btn-subtab" id="sub-bundles" onclick="filtrarSubcategoria('bundles')">Bundles</button>
+        <button class="btn-subtab" id="sub-high" onclick="filtrarSubcategoria('high')">High Tier (+90)</button>
+        <button class="btn-subtab" id="sub-mid" onclick="filtrarSubcategoria('mid')">Mid Tier (90-30)</button>
+        <button class="btn-subtab" id="sub-low" onclick="filtrarSubcategoria('low')">Low Tier (30-1)</button>
+    </div>
+
+    <div class="event-filter-container">
+  <button class="event-btn active" data-event="all">All Events</button>
+
+  <button class="event-btn" data-event="Lunar New Year"><img src="https://i.postimg.cc/HswnNHLh/Lunar-New-Year.png" alt="Lunar New Year"></button>
+  <button class="event-btn" data-event="Valentines"><img src="https://i.postimg.cc/7Y3hRDLj/Valentines.png" alt="Valentines"></button>
+  <button class="event-btn" data-event="Saint Patrick"><img src="https://i.postimg.cc/jdH21Kj1/Saint-Patrick.png" alt="Saint Patrick"></button>
+  <button class="event-btn" data-event="Spring"><img src="https://i.postimg.cc/Fsyz6mKq/Spring.png" alt="Spring"></button>
+  <button class="event-btn" data-event="Easter"><img src="https://i.postimg.cc/65rqPw3s/Easter.png" alt="Easter"></button>
+  <button class="event-btn" data-event="Anniversary"><img src="https://i.postimg.cc/fTcyPZb6/Anniversary.png" alt="Anniversary"></button>
+  <button class="event-btn" data-event="Summer"><img src="https://i.postimg.cc/wTXMrHBC/Summer.png" alt="Summer"></button>
+  <button class="event-btn" data-event="Fall"><img src="https://i.postimg.cc/vHrTKMBd/Fall.png" alt="Fall"></button>
+  <button class="event-btn" data-event="Halloween"><img src="https://i.postimg.cc/hPLvYgjg/Halloween.png" alt="Halloween"></button>
+  <button class="event-btn" data-event="Winter"><img src="https://i.postimg.cc/yYmxGBds/Winter.png" alt="Winter"></button>
+</div>
+
+
+
+
+    <div class="ftf-dashboard">
+        <div class="ftf-dash-left">
+            <div class="ftf-dash-block">
+                <span class="ftf-dash-label">Items Count</span>
+                <span class="ftf-dash-value" id="dash-qtd">0</span>
+            </div>
+            <div class="ftf-dash-block">
+                <span class="ftf-dash-label">Total Value</span>
+                <span class="ftf-dash-value"><span id="dash-valor">0</span></span>
+            </div>
+        </div>
+        <div class="ftf-dash-block" style="align-items: flex-end;">
+            <span class="ftf-dash-label">Last Updated</span>
+            <input type="text" id="input-data-att" class="dash-date-input" placeholder="July 4th, 2026" oninput="salvarDataAtualizacao()">
+        </div>
+    </div>
+
+    <div id="btn-exportar-container">
+        <button type="button" class="ui-btn" onclick="exportarLista()">Copiar código de Backup 📋</button>
+    </div>
+
+    <h2 id="titulo-secao">LEGENDARY ITEMS</h2>
+    <div id="container-cards"></div>
+
+    <script>
+    const CORES_ESTABILIDADE = {
+        "rising": "#36D8B0",
+        "doing well": "#47CC6A",
+        "improving": "#8BCC14",
+        "stable": "#94a3b8",
+        "fluctuating": "#F2BE24",
+        "struggling": "#E56D16",
+        "receding": "#D84146",
+        "dropping": "#A20002"
+    };
+
+    const CORES_RARIDADE = {
+        "legendary": "#ffa502", 
+        "epics": "#a55eea",     
+        "rares": "#45aaf2",     
+        "commons": "#a5b1c2"    
+    };
+
+    const SVG_ESTABILIDADE = {
+        Rising: `<svg viewBox="0 0 24 24" fill="none" stroke="#36D8B0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>`,
+        "Doing Well": `<svg viewBox="0 0 24 24" fill="none" stroke="#47CC6A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 11.5 2 18"></polyline></svg>`,
+        Improving: `<svg viewBox="0 0 24 24" fill="none" stroke="#8BCC14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`,
+        Stable: `<svg viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="3.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>`,
+        Fluctuating: `<svg viewBox="0 0 24 24" fill="none" stroke="#F2BE24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l3-9 6 18 3-9h3"></path></svg>`,
+        Struggling: `<svg viewBox="0 0 24 24" fill="none" stroke="#E56D16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`,
+        Receding: `<svg viewBox="0 0 24 24" fill="none" stroke="#D84146" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>`,
+        Dropping: `<svg viewBox="0 0 24 24" fill="none" stroke="#ff4d4f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 7 10.5 15.5 15.5 11.5 22 18"></polyline><polyline points="16 18 22 18 22 12"></polyline></svg>`
+    };
+
+    const BASE_PADRAO_MARRETAS = [
+        {"id":1001,"nome":"1 Billion","imgSrc":"https://i.postimg.cc/RZt4jpTP/1-Billion.webp","raridade":"legendary"},
+        {"id":1002,"nome":"2019","imgSrc":"https://i.postimg.cc/HkMdfvtB/2019.webp","raridade":"legendary"},
+        {"id":1003,"nome":"2020","imgSrc":"https://i.postimg.cc/qMSpDH27/2020.webp","raridade":"legendary"},
+        {"id":1004,"nome":"2021","imgSrc":"https://i.postimg.cc/sx03Rt88/2021.webp","raridade":"legendary"},
+        {"id":1005,"nome":"2022","imgSrc":"https://i.postimg.cc/brFqjKM4/2022.webp","raridade":"legendary"},
+        {"id":1006,"nome":"2023","imgSrc":"https://i.postimg.cc/5ykfMZGZ/2023.webp","raridade":"legendary"},
+        {"id":1007,"nome":"2024","imgSrc":"https://i.postimg.cc/KjsmydV6/2024.webp","raridade":"legendary"},
+        {"id":1008,"nome":"2025","imgSrc":"https://i.postimg.cc/7hQqypdv/2025.webp","raridade":"legendary"},
+        {"id":1009,"nome":"2026","imgSrc":"https://i.postimg.cc/90fcKWxR/2026.webp","raridade":"legendary"},
+        {"id":1010,"nome":"2nd Anniversary","imgSrc":"https://i.postimg.cc/rF3qZ25f/2nd-Anniversary.webp","raridade":"legendary"},
+        {"id":1011,"nome":"3rd Anniversary","imgSrc":"https://i.postimg.cc/ncgnSfqh/3rd-Anniversary.webp","raridade":"legendary"},
+        {"id":1012,"nome":"4th Anniversary","imgSrc":"https://i.postimg.cc/tJm9HLfS/4th-Anniversary.webp","raridade":"legendary"},
+        {"id":1013,"nome":"5 Billion","imgSrc":"https://i.postimg.cc/DZ62xWc1/5-Billion.webp","raridade":"legendary"},
+        {"id":1014,"nome":"5th Anniversary","imgSrc":"https://i.postimg.cc/tJm9HLfv/5th-Anniversary.webp","raridade":"legendary"},
+        {"id":1015,"nome":"6th Anniversary","imgSrc":"https://i.postimg.cc/J0dRW9gd/6th-Anniversary.webp","raridade":"legendary"},
+        {"id":1016,"nome":"7th Anniversary","imgSrc":"https://i.postimg.cc/mkrTJbdP/7th-Anniversary.webp","raridade":"legendary"},
+        {"id":1017,"nome":"8th Anniversary","imgSrc":"https://i.postimg.cc/qq7pSkmg/8th-Anniversary.webp","raridade":"legendary"},
+        {"id":1018,"nome":"Acidic Potions","imgSrc":"https://i.postimg.cc/FKgmKf8c/Acidic-Potions.webp","raridade":"legendary"},
+        {"id":1019,"nome":"Alchemist Hunter","imgSrc":"https://i.postimg.cc/LsBRsqw1/Alchemist-Hunter.webp","raridade":"legendary"},
+        {"id":1020,"nome":"Ancestral Trident","imgSrc":"https://i.postimg.cc/W1ZTQYns/Ancestral-Trident.webp","raridade":"legendary"},
+        {"id":1021,"nome":"Ancient Portal","imgSrc":"https://i.postimg.cc/MZs6RQTR/Ancient-Portal.webp","raridade":"legendary"},
+        {"id":1022,"nome":"Ancient Trident","imgSrc":"https://i.postimg.cc/YCFMJD3M/Ancient-Trident.webp","raridade":"legendary"},
+        {"id":1023,"nome":"Antique Piano","imgSrc":"https://i.postimg.cc/jjQKjWmD/Antique-Piano.webp","raridade":"legendary"},
+        {"id":1024,"nome":"Aurora Abolisher","imgSrc":"https://i.postimg.cc/TYFTNvng/Aurora-Abolisher.webp","raridade":"legendary"},
+        {"id":1025,"nome":"Autumn Crops","imgSrc":"https://i.postimg.cc/vHcQvZgk/Autumn-Crops.webp","raridade":"legendary"},
+        {"id":1026,"nome":"Autumn Lamp","imgSrc":"https://i.postimg.cc/KjsmydVQ/Autumn-Lamp.webp","raridade":"legendary"},
+        {"id":1027,"nome":"Autumn Scarecrow","imgSrc":"https://i.postimg.cc/QMrhsg41/Autumn-Scarecrow.webp","raridade":"legendary"},
+        {"id":1028,"nome":"Autumn Tent","imgSrc":"https://i.postimg.cc/rpLMcGnL/Autumn-Tent.webp","raridade":"legendary"},
+        {"id":1029,"nome":"Batwing Basher","imgSrc":"https://i.postimg.cc/HxYm8Y1h/Batwing-Basher.webp","raridade":"legendary"},
+        {"id":1030,"nome":"Beach Boat","imgSrc":"https://i.postimg.cc/J7TrJknT/Beach-Boat.webp","raridade":"legendary"},
+        {"id":1031,"nome":"Bitter Lemonade Basket","imgSrc":"https://i.postimg.cc/3wC7wyVF/Bitter-Lemonade-Basket.webp","raridade":"legendary"},
+        {"id":1032,"nome":"Black Light Madness","imgSrc":"https://i.postimg.cc/MKvWYpfK/Black-Light-Madness.webp","raridade":"legendary"},
+        {"id":1033,"nome":"Blade of Thorns","imgSrc":"https://i.postimg.cc/LsBRsqwn/Blade-of-Thorns.webp","raridade":"legendary"},
+        {"id":1034,"nome":"Bleeding Heart","imgSrc":"https://i.postimg.cc/MGbxGcNt/Bleeding-Heart.webp","raridade":"legendary"},
+        {"id":1035,"nome":"Bloodline Bat","imgSrc":"https://i.postimg.cc/tJg9wXr1/Bloodline-Bat.webp","raridade":"legendary"},
+        {"id":1036,"nome":"Bloodthirst Axe","imgSrc":"https://i.postimg.cc/DzdFzWHd/Bloodthirst-Axe.webp","raridade":"legendary"},
+        {"id":1037,"nome":"Blue Nutcracker","imgSrc":"https://i.postimg.cc/gknYK2LL/Blue-Nutcracker.webp","raridade":"legendary"},
+        {"id":1038,"nome":"Blueberry Jam Basket","imgSrc":"https://i.postimg.cc/7LMDLCdV/Blueberry-Jam-Basket.webp","raridade":"legendary"},
+        {"id":1039,"nome":"Book of Fortunes","imgSrc":"https://i.postimg.cc/fTpMqQYL/Book-of-Fortunes.webp","raridade":"legendary"},
+        {"id":1040,"nome":"Bundle Of Harmony","imgSrc":"https://i.postimg.cc/mrNRrcJn/Bundle-Of-Harmony.png","raridade":"legendary", "tipo":"bundles"},
+        {"id":1041,"nome":"Bundle Of Longevity","imgSrc":"https://i.postimg.cc/4y3XqJ8w/Bundle-Of-Longevity.png","raridade":"legendary", "tipo":"bundles"},
+        {"id":1042,"nome":"Candy Cane Jar","imgSrc":"https://i.postimg.cc/htmcHZrn/Candy-Cane-Jar.webp","raridade":"legendary"},
+        {"id":1043,"nome":"Celestial Witch Broom","imgSrc":"https://i.postimg.cc/NjXBWCx7/Celestial-Witch-Broom.webp","raridade":"legendary"},
+        {"id":1044,"nome":"Cherry Blossom Tree","imgSrc":"https://i.postimg.cc/KzGb3GyZ/Cherry-Blossom-Tree.webp","raridade":"legendary"},
+        {"id":1045,"nome":"Chromatic Phoenix","imgSrc":"https://i.postimg.cc/BQkJ7f2L/Chromatic-Phoenix.webp","raridade":"legendary"},
+        {"id":1046,"nome":"Circus Cage","imgSrc":"https://i.postimg.cc/cC5dNV2G/Circus-Cage.webp","raridade":"legendary"},
+        {"id":1047,"nome":"Classic","imgSrc":"https://i.postimg.cc/7LMDLCdF/Classic.webp","raridade":"legendary"},
+        {"id":1048,"nome":"Coastal Lighthouse","imgSrc":"https://i.postimg.cc/v8PY9VBK/Coastal-Lighthouse.webp","raridade":"legendary"},
+        {"id":1049,"nome":"Cocoa Machine","imgSrc":"https://i.postimg.cc/4xcsr21P/Cocoa-Machine.webp","raridade":"legendary"},
+        {"id":1050,"nome":"Coffin","imgSrc":"https://i.postimg.cc/N0wBY8JQ/Coffin.webp","raridade":"legendary"},
+        {"id":1051,"nome":"Cornucopia","imgSrc":"https://i.postimg.cc/d3SJKzXW/Cornucopia.webp","raridade":"legendary"},
+        {"id":1052,"nome":"Cozy Cocoa","imgSrc":"https://i.postimg.cc/3rL8pvRz/Cozy-Cocoa.webp","raridade":"legendary"},
+        {"id":1053,"nome":"Cranberry Barrel","imgSrc":"https://i.postimg.cc/bvjp80CD/Cranberry-Barrel.webp","raridade":"legendary"},
+        {"id":1054,"nome":"Cuddly Bunny","imgSrc":"https://i.postimg.cc/h4CDxdj2/Cuddly-Bunny.webp","raridade":"legendary"},
+        {"id":1055,"nome":"Cursed Circus Tent","imgSrc":"https://i.postimg.cc/Fs8hCX0P/Cursed-Circus-Tent.webp","raridade":"legendary"},
+        {"id":1056,"nome":"Dark Bone Crusher","imgSrc":"https://i.postimg.cc/C1h0nhpJ/Dark-Bone-Crusher.webp","raridade":"legendary"},
+        {"id":1057,"nome":"Dark Mansion","imgSrc":"https://i.postimg.cc/pdtRxQGn/Dark-Mansion.webp","raridade":"legendary"},
+        {"id":1058,"nome":"Dave Pumpkins","imgSrc":"https://i.postimg.cc/SNJyGxYj/Dave-Pumpkins.webp","raridade":"legendary"},
+        {"id":1059,"nome":"Dayflower","imgSrc":"https://i.postimg.cc/dVCwzN9z/Dayflower.webp","raridade":"legendary"},
+        {"id":1060,"nome":"Deathberry Pie","imgSrc":"https://i.postimg.cc/jq8xN75H/Deathberry-Pie.webp","raridade":"legendary"},
+        {"id":1061,"nome":"Devilborn","imgSrc":"https://i.postimg.cc/sXjzGjCn/Devilborn.webp","raridade":"legendary"},
+        {"id":1062,"nome":"Devilish Candle","imgSrc":"https://i.postimg.cc/KzGb3Ghd/Devilish-Candle.webp","raridade":"legendary"},
+        {"id":1063,"nome":"Doomthrust","imgSrc":"https://i.postimg.cc/vHkG2w5t/Doomthrust.webp","raridade":"legendary"},
+        {"id":1064,"nome":"Dragon Puppet","imgSrc":"https://i.postimg.cc/nzFx9Ff3/Dragon-Puppet.webp","raridade":"legendary"},
+        {"id":1065,"nome":"Easter Basket","imgSrc":"https://i.postimg.cc/zBzNHz15/Easter-Basket.webp","raridade":"legendary"},
+        {"id":1066,"nome":"Easter Chick","imgSrc":"https://i.postimg.cc/q7d40cb8/Easter-Chick.webp","raridade":"legendary"},
+        {"id":1067,"nome":"Eggnog Machine","imgSrc":"https://i.postimg.cc/15f9K3V3/Eggnog-Machine.webp","raridade":"legendary"},
+        {"id":1068,"nome":"Elf Box","imgSrc":"https://i.postimg.cc/FznhQ28m/Elf-Box.webp","raridade":"legendary"},
+        {"id":1069,"nome":"Enchanted Circus Tent","imgSrc":"https://i.postimg.cc/bNWqVf1F/Enchanted-Circus-Tent.webp","raridade":"legendary"},
+        {"id":1070,"nome":"Eye of Blizzaria","imgSrc":"https://i.postimg.cc/j2jRms8H/Eye-of-Blizzaria.webp","raridade":"legendary"},
+        {"id":1071,"nome":"Fairy Tale Book","imgSrc":"https://i.postimg.cc/1XYyZL2t/Fairy-Tale-Book.webp","raridade":"legendary"},
+        {"id":1072,"nome":"Fall Harvester","imgSrc":"https://i.postimg.cc/kG57znj8/Fall-Harvester.webp","raridade":"legendary"},
+        {"id":1073,"nome":"Fall Wheelbarrow","imgSrc":"https://i.postimg.cc/MHGzNWsV/Fall-Wheelbarrow.webp","raridade":"legendary"},
+        {"id":1074,"nome":"Festive Candelabra","imgSrc":"https://i.postimg.cc/Gp1drP7R/Festive-Candelabra.webp","raridade":"legendary"},
+        {"id":1075,"nome":"Festive Fruitcake","imgSrc":"https://i.postimg.cc/QCMjwX6k/Festive-Fruitcake.webp","raridade":"legendary"},
+        {"id":1076,"nome":"Festive Pinecone","imgSrc":"https://i.postimg.cc/kMjJ8bGP/Festive-Pinecone.webp","raridade":"legendary"},
+        {"id":1077,"nome":"Festive Train","imgSrc":"https://i.postimg.cc/ncCH1hjy/Festive-Train.webp","raridade":"legendary"},
+        {"id":1078,"nome":"Fiery Phoenix","imgSrc":"https://i.postimg.cc/CKVSYCPL/Fiery-Phoenix.webp","raridade":"legendary"},
+        {"id":1079,"nome":"Fish Tank","imgSrc":"https://i.postimg.cc/nhmp6S1g/Fish-Tank.webp","raridade":"legendary"},
+        {"id":1080,"nome":"Flourished Fountain","imgSrc":"https://i.postimg.cc/tCYXz4nR/Flourished-Fountain.webp","raridade":"legendary"},
+        {"id":1081,"nome":"Fortune House","imgSrc":"https://i.postimg.cc/vZnbp2zR/Fortune-House.webp","raridade":"legendary"},
+        {"id":1082,"nome":"Frost Engine","imgSrc":"https://i.postimg.cc/gkQGtb3K/Frost-Engine.webp","raridade":"legendary"},
+        {"id":1083,"nome":"Frostbite","imgSrc":"https://i.postimg.cc/8cnTVq9P/Frostbite.webp","raridade":"legendary"},
+        {"id":1084,"nome":"Frosted Frequency","imgSrc":"https://i.postimg.cc/C56wVWXS/Frosted-Frequency.webp","raridade":"legendary"},
+        {"id":1085,"nome":"Frozen Fortress","imgSrc":"https://i.postimg.cc/yxr7zwtV/Frozen-Fortress.webp","raridade":"legendary"},
+        {"id":1086,"nome":"Fudge Bunny","imgSrc":"https://i.postimg.cc/ZYfb3dRs/Fudge-Bunny.webp","raridade":"legendary"},
+        {"id":1087,"nome":"Fungal Thumper","imgSrc":"https://i.postimg.cc/Kc9GLMzD/Fungal-Thumper.webp","raridade":"legendary"},
+        {"id":1088,"nome":"Gingerbread House","imgSrc":"https://i.postimg.cc/02b8CyKx/Gingerbread-House.webp","raridade":"legendary"},
+        {"id":1089,"nome":"Golden Firework","imgSrc":"https://i.postimg.cc/yYt7pC00/Golden-Firework.webp","raridade":"legendary"},
+        {"id":1090,"nome":"Gothic Bouquet","imgSrc":"https://i.postimg.cc/gJzpLzPz/Gothic-Bouquet.webp","raridade":"legendary"},
+        {"id":1091,"nome":"Grandfather Clock","imgSrc":"https://i.postimg.cc/nLtpZKR7/Grandfather-Clock.webp","raridade":"legendary"},
+        {"id":1092,"nome":"Grape Barrel","imgSrc":"https://i.postimg.cc/vTmGkQP7/Grape-Barrel.webp","raridade":"legendary"},
+        {"id":1093,"nome":"Grim Galleon","imgSrc":"https://i.postimg.cc/5tMb157y/Grim-Galleon.webp","raridade":"legendary"},
+        {"id":1094,"nome":"Haunted Circus Tent","imgSrc":"https://i.postimg.cc/hP6KZRVy/Haunted-Circus-Tent.webp","raridade":"legendary"},
+        {"id":1095,"nome":"Holiday Hotline","imgSrc":"https://i.postimg.cc/QxwjYZcp/Holiday-Hotline.webp","raridade":"legendary"},
+        {"id":1096,"nome":"Hollow Scythe","imgSrc":"https://i.postimg.cc/cJMZJK22/Hollow-Scythe.webp","raridade":"legendary"},
+        {"id":1097,"nome":"Honey Cheesecake","imgSrc":"https://i.postimg.cc/wMB9Z6Wn/Honey-Cheesecake.png","raridade":"legendary"},
+        {"id":1098,"nome":"Honey Hive Tree","imgSrc":"https://i.postimg.cc/152y71DN/Honey-Hive-Tree.webp","raridade":"legendary"},
+        {"id":1099,"nome":"Ice Sleigh","imgSrc":"https://i.postimg.cc/c4rscLtN/Ice-Sleigh.webp","raridade":"legendary"},
+        {"id":1100,"nome":"Icecream Mix","imgSrc":"https://i.postimg.cc/4dfGHfRj/Icecream-Mix.webp","raridade":"legendary"},
+        {"id":1101,"nome":"Irish Harp","imgSrc":"https://i.postimg.cc/C56wVWX5/Irish-Harp.webp","raridade":"legendary"},
+        {"id":1102,"nome":"Jade Viper","imgSrc":"https://i.postimg.cc/GmDdZgQh/Jade-Viper.webp","raridade":"legendary"},
+        {"id":1103,"nome":"Jello Dessert","imgSrc":"https://i.postimg.cc/VNcm19GJ/Jello-Dessert.webp","raridade":"legendary"},
+        {"id":1104,"nome":"Jingle Bells","imgSrc":"https://i.postimg.cc/kMjJ8bGd/Jingle-Bells.webp","raridade":"legendary"},
+        {"id":1105,"nome":"Jollyday Batter","imgSrc":"https://i.postimg.cc/9fjCVP8y/Jollyday-Batter.webp","raridade":"legendary"},
+        {"id":1106,"nome":"Krampus Chimney","imgSrc":"https://i.postimg.cc/yYkVT8g5/Krampus-Chimney.webp","raridade":"legendary"},
+        {"id":1107,"nome":"Leprechaun Boot","imgSrc":"https://i.postimg.cc/7hLqdxBf/Leprechaun-Boot.webp","raridade":"legendary"},
+        {"id":1108,"nome":"Light Bone Crusher","imgSrc":"https://i.postimg.cc/1zcPzg2g/Light-Bone-Crusher.webp","raridade":"legendary"},
+        {"id":1109,"nome":"Lil Tree","imgSrc":"https://i.postimg.cc/Dy82cw4W/Lil-Tree.webp","raridade":"legendary"},
+        {"id":1110,"nome":"Lilium Bush","imgSrc":"https://i.postimg.cc/GmDdZgjW/Lilium-Bush.webp","raridade":"legendary"},
+        {"id":1111,"nome":"Lily of The Valley","imgSrc":"https://i.postimg.cc/MHGzNWsd/Lily-of-The-Valley.png","raridade":"legendary"},
+        {"id":1112,"nome":"Lonely Date","imgSrc":"https://i.postimg.cc/hvGK6SCs/Lonely-Date.png","raridade":"legendary"},
+        {"id":1113,"nome":"Lovely Heart","imgSrc":"https://i.postimg.cc/tgtyg1wm/Lovely-Heart.webp","raridade":"legendary"},
+        {"id":1114,"nome":"Lovesick Bow","imgSrc":"https://i.postimg.cc/xCfQNfSr/Lovesick-Bow.webp","raridade":"legendary"},
+        {"id":1115,"nome":"Lucky Top Hat","imgSrc":"https://i.postimg.cc/wjNgS4kr/Lucky-Top-Hat.webp","raridade":"legendary"},
+        {"id":1116,"nome":"Lunar Scepter","imgSrc":"https://i.postimg.cc/0NdxN6F7/Lunar-Scepter.webp","raridade":"legendary"},
+        {"id":1117,"nome":"Lunar Witch Broom","imgSrc":"https://i.postimg.cc/YCFMJDxz/Lunar-Witch-Broom.webp","raridade":"legendary"},
+        {"id":1118,"nome":"Luxury Projector","imgSrc":"https://i.postimg.cc/TPXfGjkz/Luxury-Projector.webp","raridade":"legendary"},
+        {"id":1119,"nome":"Magical Portal","imgSrc":"https://i.postimg.cc/rmVTRVL2/Magical-Portal.webp","raridade":"legendary"},
+        {"id":1120,"nome":"Marching Drums","imgSrc":"https://i.postimg.cc/65gBbxCZ/Marching-Drums.webp","raridade":"legendary"},
+        {"id":1121,"nome":"Marine Anchor","imgSrc":"https://i.postimg.cc/k5F95VzL/Marine-Anchor.webp","raridade":"legendary"},
+        {"id":1122,"nome":"Merry Music Box","imgSrc":"https://i.postimg.cc/504JQ4WK/Merry-Music-Box.webp","raridade":"legendary"},
+        {"id":1123,"nome":"Midnight Light","imgSrc":"https://i.postimg.cc/xdSnYGx2/Midnight-Light.webp","raridade":"legendary"},
+        {"id":1124,"nome":"Moon Staff","imgSrc":"https://i.postimg.cc/K8TxdpNG/Moon-Staff.webp","raridade":"legendary"},
+        {"id":1125,"nome":"Mothership","imgSrc":"https://i.postimg.cc/d0KwvRHM/Mothership.webp","raridade":"legendary"},
+        {"id":1126,"nome":"Mycelium Mallet","imgSrc":"https://i.postimg.cc/59P4vC03/Mycelium-Mallet.webp","raridade":"legendary"},
+        {"id":1127,"nome":"Mystical Trident","imgSrc":"https://i.postimg.cc/HkMdfv2H/Mystical-Trident.webp","raridade":"legendary"},
+        {"id":1128,"nome":"Nightbloom","imgSrc":"https://i.postimg.cc/Z5N41sLX/Nightbloom.webp","raridade":"legendary"},
+        {"id":1129,"nome":"Owl Tree","imgSrc":"https://i.postimg.cc/yYt7pC0D/Owl-Tree.webp","raridade":"legendary"},
+        {"id":1130,"nome":"Paint Canvas","imgSrc":"https://i.postimg.cc/Y2XrgW9Z/Paint-Canvas.webp","raridade":"legendary"},
+        {"id":1131,"nome":"Paranormal Hot Balloon","imgSrc":"https://i.postimg.cc/VNB1NSpq/Paranormal-Hot-Balloon.webp","raridade":"legendary"},
+        {"id":1132,"nome":"Party Balloons","imgSrc":"https://i.postimg.cc/qRJr6JdV/Party-Balloons.webp","raridade":"legendary"},
+        {"id":1133,"nome":"Pegasus Blade","imgSrc":"https://i.postimg.cc/Qt8DK8rD/Pegasus-Blade.webp","raridade":"legendary"},
+        {"id":1134,"nome":"Permafrost Axe","imgSrc":"https://i.postimg.cc/gj0GQYM3/Permafrost-Axe.webp","raridade":"legendary"},
+        {"id":1135,"nome":"Phantom Light","imgSrc":"https://i.postimg.cc/mrGBR3XL/Phantom-Light.webp","raridade":"legendary"},
+        {"id":1136,"nome":"Pharaoh Sarcophagus","imgSrc":"https://i.postimg.cc/gj0GQYM6/Pharaoh-Sarcophagus.webp","raridade":"legendary"},
+        {"id":1137,"nome":"Pinata","imgSrc":"https://i.postimg.cc/mrNRrcJ3/Pinata.webp","raridade":"legendary"},
+        {"id":1138,"nome":"Pot O Gold","imgSrc":"https://i.postimg.cc/d1sFZsKK/Pot-O-Gold.webp","raridade":"legendary"},
+        {"id":1139,"nome":"Pristine Chocolatery","imgSrc":"https://i.postimg.cc/YSfkS4Zb/Pristine-Chocolatery.webp","raridade":"legendary"},
+        {"id":1140,"nome":"Psycho's Chainsaw","imgSrc":"https://i.postimg.cc/B6S3PSfw/Psycho-s-Chainsaw.webp","raridade":"legendary"},
+        {"id":1141,"nome":"Pumpkin Slice","imgSrc":"https://i.postimg.cc/mDL41LGB/Pumpkin-Slice.webp","raridade":"legendary"},
+        {"id":1142,"nome":"Ragebringer","imgSrc":"https://i.postimg.cc/N0wBY8J5/Ragebringer.webp","raridade":"legendary"},
+        {"id":1143,"nome":"Red Nutcracker","imgSrc":"https://i.postimg.cc/wjNgS4kb/Red-Nutcracker.webp","raridade":"legendary"},
+        {"id":1144,"nome":"Roasted Turkey","imgSrc":"https://i.postimg.cc/LsM2RkCF/Roasted-Turkey.webp","raridade":"legendary"},
+        {"id":1145,"nome":"Sakura Parasol","imgSrc":"https://i.postimg.cc/zBzNHzYs/Sakura-Parasol.png","raridade":"legendary"},
+        {"id":1146,"nome":"Sand Castle","imgSrc":"https://i.postimg.cc/8CBDCF94/Sand-Castle.webp","raridade":"legendary"},
+        {"id":1147,"nome":"Santa Boot","imgSrc":"https://i.postimg.cc/mg9B0pwG/Santa-Boot.webp","raridade":"legendary"},
+        {"id":1148,"nome":"Santa Box","imgSrc":"https://i.postimg.cc/3Nb3HPVh/Santa-Box.webp","raridade":"legendary"},
+        {"id":1149,"nome":"Santa Chimney","imgSrc":"https://i.postimg.cc/Qd7hRYqf/Santa-Chimney.webp","raridade":"legendary"},
+        {"id":1150,"nome":"Santa's Reindeer","imgSrc":"https://i.postimg.cc/vmdbM7qx/Santa-s-Reindeer.webp","raridade":"legendary"},
+        {"id":1151,"nome":"Santa's Sleigh","imgSrc":"https://i.postimg.cc/fTpMqQYc/Santa-s-Sleigh.webp","raridade":"legendary"},
+        {"id":1152,"nome":"Scareapple Pie","imgSrc":"https://i.postimg.cc/nVdF7DzY/Scareapple-Pie.webp","raridade":"legendary"},
+        {"id":1153,"nome":"Scarlet Firework","imgSrc":"https://i.postimg.cc/QCnjrRwM/Scarlet-Firework.webp","raridade":"legendary"},
+        {"id":1154,"nome":"Shroomy Smasher","imgSrc":"https://i.postimg.cc/tRrqPxTz/Shroomy-Smasher.webp","raridade":"legendary"},
+        {"id":1155,"nome":"Snow Globe","imgSrc":"https://i.postimg.cc/x1mnWpPg/Snow-Globe.webp","raridade":"legendary"},
+        {"id":1156,"nome":"Snowboarder Penguin","imgSrc":"https://i.postimg.cc/gj0GQYMv/Snowboarder-Penguin.webp","raridade":"legendary"},
+        {"id":1157,"nome":"Snowman","imgSrc":"https://i.postimg.cc/sDvVJgGQ/Snowman.webp","raridade":"legendary"},
+        {"id":1158,"nome":"Snowman Box","imgSrc":"https://i.postimg.cc/GtSb1ZV1/Snowman-Box.webp","raridade":"legendary"},
+        {"id":1159,"nome":"Solar Witch Broom","imgSrc":"https://i.postimg.cc/qvK49DGG/Solar-Witch-Broom.webp","raridade":"legendary"},
+        {"id":1160,"nome":"Soulless Theater","imgSrc":"https://i.postimg.cc/pdYxd94g/Soulless-Theater.webp","raridade":"legendary"},
+        {"id":1161,"nome":"Spookpumpkin Pie","imgSrc":"https://i.postimg.cc/jq8xN75y/Spookpumpkin-Pie.webp","raridade":"legendary"},
+        {"id":1162,"nome":"Spooky Brew","imgSrc":"https://i.postimg.cc/rmVTRV23/Spooky-Brew.webp","raridade":"legendary"},
+        {"id":1163,"nome":"Spring World","imgSrc":"https://i.postimg.cc/nLYZLsg5/Spring-World.webp","raridade":"legendary"},
+        {"id":1164,"nome":"Stack of Presents","imgSrc":"https://i.postimg.cc/xjsfHz8Q/Stack-of-Presents.webp","raridade":"legendary"},
+        {"id":1165,"nome":"Starborne Reverie","imgSrc":"https://i.postimg.cc/fybMpwHS/Starborne-Reverie.webp","raridade":"legendary"},
+        {"id":1166,"nome":"Strawberry Fields","imgSrc":"https://i.postimg.cc/B6S3PSfz/Strawberry-Fields.png","raridade":"legendary"},
+        {"id":1167,"nome":"Strawberry Jelly Basket","imgSrc":"https://i.postimg.cc/bvH8vGWB/Strawberry-Jelly-Basket.webp","raridade":"legendary"},
+        {"id":1168,"nome":"Sweet Train","imgSrc":"https://i.postimg.cc/jdLshSnY/Sweet-Train.webp","raridade":"legendary"},
+        {"id":1169,"nome":"Sweethearts Store","imgSrc":"https://i.postimg.cc/9Q9Cvgp5/Sweethearts-Store.png","raridade":"legendary"},
+        {"id":1170,"nome":"Theatrical Spotlight","imgSrc":"https://i.postimg.cc/FFPrcLRq/Theatrical-Spotlight.webp","raridade":"legendary"},
+        {"id":1171,"nome":"Toasted Marshmallow","imgSrc":"https://i.postimg.cc/c1DxYnHw/Toasted-Marshmallow.webp","raridade":"legendary"},
+        {"id":1172,"nome":"Tombstone Bash","imgSrc":"https://i.postimg.cc/yNzsBhQV/Tombstone-Bash.webp","raridade":"legendary"},
+        {"id":1173,"nome":"Toy Box","imgSrc":"https://i.postimg.cc/bNWqVf1H/Toy-Box.webp","raridade":"legendary"},
+        {"id":1174,"nome":"Toy Elf","imgSrc":"https://i.postimg.cc/qMzkGv63/Toy-Elf.webp","raridade":"legendary"},
+        {"id":1175,"nome":"Toy Santa","imgSrc":"https://i.postimg.cc/JzXM9YQ2/Toy-Santa.webp","raridade":"legendary"},
+        {"id":1176,"nome":"Tropical Drink","imgSrc":"https://i.postimg.cc/zDdzWgBt/Tropical-Drink.webp","raridade":"legendary"},
+        {"id":1177,"nome":"Twisted Passion","imgSrc":"https://i.postimg.cc/85pGfpgt/Twisted-Passion.webp","raridade":"legendary"},
+        {"id":1178,"nome":"Unchained Beast","imgSrc":"https://i.postimg.cc/TYpRc3LB/Unchained-Beast.webp","raridade":"legendary"},
+        {"id":1179,"nome":"Veridian Greenhouse","imgSrc":"https://i.postimg.cc/T1PTFRkS/Veridian-Greenhouse.png","raridade":"legendary"},
+        {"id":1180,"nome":"Vintage TV","imgSrc":"https://i.postimg.cc/mk6TG0Jf/Vintage-TV.webp","raridade":"legendary"},
+        {"id":1181,"nome":"VIP Ban Hammer","imgSrc":"https://i.postimg.cc/tTkXB1z3/VIP-Ban-Hammer.webp","raridade":"legendary"},
+        {"id":1182,"nome":"Warlock Hunter","imgSrc":"https://i.postimg.cc/9ftVf4Kq/Warlock-Hunter.webp","raridade":"legendary"},
+        {"id":1183,"nome":"Watering Can","imgSrc":"https://i.postimg.cc/02F9X17K/Watering-Can.webp","raridade":"legendary"},
+        {"id":1184,"nome":"Winter Breeze","imgSrc":"https://i.postimg.cc/wxWqJmM8/Winter-Breeze.webp","raridade":"legendary"},
+        {"id":1185,"nome":"Winter Train","imgSrc":"https://i.postimg.cc/ZKCTL5vt/Winter-Train.webp","raridade":"legendary"},
+        {"id":1186,"nome":"Witch Hunter","imgSrc":"https://i.postimg.cc/SK7qKX32/Witch-Hunter.webp","raridade":"legendary"},
+        {"id":1187,"nome":"Woodland Staff","imgSrc":"https://i.postimg.cc/Y0StZpXP/Woodland-Staff.png","raridade":"legendary"},
+        {"id":1188,"nome":"Year Of The Horse","imgSrc":"https://i.postimg.cc/FzKh89PT/Year-Of-The-Horse.png","raridade":"legendary"},
+        {"id":1189,"nome":"Yuletide Gift","imgSrc":"https://i.postimg.cc/9fjCVP8M/Yuletide-Gift.webp","raridade":"legendary"},
+        {"id":1190,"nome":"Zombie Hand","imgSrc":"https://i.postimg.cc/zvfq6Jdh/Zombie-Hand.webp","raridade":"legendary"}
+    ];
+
+    let listaDeMarretas = [];
+    let raridadeAtual = 'legendary'; 
+    let subcategoriaAtual = 'todos';
+    let eventoAtual = 'all';
+    
+    function inicializarBancoDados() {
+        let dadosLocais = null;
+        try {
+            dadosLocais = JSON.parse(localStorage.getItem('ftf_custom_v5'));
+        } catch (e) {
+            dadosLocais = null;
+        }
+
+        if (!Array.isArray(dadosLocais) || dadosLocais.length === 0) {
+            listaDeMarretas = [];
+            forçarInjecaoListaPadrao();
+        } else {
+            listaDeMarretas = dadosLocais.map(item => ({
+                id: item.id,
+                nome: item.nome || "Marreta",
+                valor: item.valor || '10',  
+                raridade: item.raridade || 'legendary',
+                demanda: item.demanda || '5', 
+                tendencia: item.tendencia || 'none',
+                status: item.status || 'none',
+                templates: item.templates || 'Stable',
+                imgSrc: item.imgSrc,
+                evento: item.evento || mapearEventoAutomatico(item.nome),
+                tipo: item.tipo || 'normal',
+                recente: item.recente || 'nao'
+            }));
+        }
+
+        localStorage.setItem('ftf_custom_v5', JSON.stringify(listaDeMarretas));
+        
+        let datasSalvas = JSON.parse(localStorage.getItem('ftf_datas_att')) || {};
+        document.getElementById('input-data-att').value = datasSalvas[raridadeAtual] || "July 4th, 2026";
+
+        atualizarFiltroEventosMenu();
+        configurarBotoesEvento();
+        carregarCardsSalvos();
+    }
+
+    function forçarInjecaoListaPadrao() {
+        listaDeMarretas = BASE_PADRAO_MARRETAS.map(m => ({
+            id: m.id,
+            nome: m.nome || "Marreta",
+            valor: m.valor || '10',  
+            raridade: m.raridade || 'legendary',
+            demanda: m.demanda || '5', 
+            tendencia: m.tendencia || 'none',
+            status: m.status || 'none',
+            templates: m.templates || 'Stable',
+            imgSrc: m.imgSrc,
+            evento: mapearEventoAutomatico(m.nome),
+            tipo: m.tipo || 'normal',
+            recente: 'nao'
+        }));
+        localStorage.setItem('ftf_custom_v5', JSON.stringify(listaDeMarretas));
+    }
+
+        function mapearEventoAutomatico(nome) {
+    const n = (nome || "").toLowerCase();
+    
+    if (n.includes('lunar') || n.includes('ox') || n.includes('tiger') || n.includes('rat')) return 'Lunar New Year';
+    if (n.includes('valentine') || n.includes('heart') || n.includes('love') || n.includes('cupid')) return 'Valentines';
+    if (n.includes('patrick') || n.includes('clover') || n.includes('shamrock') || n.includes('leprechaun')) return 'Saint Patrick';
+    if (n.includes('spring') || n.includes('pegasus') || n.includes('bloom')) return 'Spring';
+    if (n.includes('easter') || n.includes('bunny') || n.includes('chick') || n.includes('egg')) return 'Easter';
+    if (n.includes('anniversary') || n.includes('2nd') || n.includes('3rd') || n.includes('4th') || n.includes('5th') || n.includes('6th') || n.includes('7th') || n.includes('8th') || n.includes('balloons')) return 'Anniversary';
+    if (n.includes('summer') || n.includes('beach') || n.includes('sundae') || n.includes('anchor')) return 'Summer';
+    if (n.includes('autumn') || n.includes('fall') || n.includes('crops') || n.includes('maple')) return 'Fall';
+    if (n.includes('halloween') || n.includes('spook') || n.includes('witch') || n.includes('zombie') || n.includes('pumpkin')) return 'Halloween';
+    if (n.includes('santa') || n.includes('christmas') || n.includes('winter') || n.includes('snow') || n.includes('ice')) return 'Winter';
+    
+    return 'Geral';
+}
+
+
+    function resetarParaPadraoCodigo() {
+        if (confirm("Deseja realmente restaurar todos os valores oficiais padrão do FTF Values?")) {
+            localStorage.removeItem('ftf_custom_v5');
+            localStorage.removeItem('ftf_datas_att');
+            forçarInjecaoListaPadrao();
+            inicializarBancoDados();
+        }
+    }
+
+    function salvarDataAtualizacao() {
+        let datasSalvas = JSON.parse(localStorage.getItem('ftf_datas_att')) || {};
+        datasSalvas[raridadeAtual] = document.getElementById('input-data-att').value;
+        localStorage.setItem('ftf_datas_att', JSON.stringify(datasSalvas));
+    }
+
+    function atualizarFiltroEventosMenu() {
+        const select = document.getElementById('filtroEvento');
+        if (!select) return;
+        const eventosUnicos = [...new Set(listaDeMarretas.map(item => item.evento || "Geral"))];
+        
+        select.innerHTML = '<option value="todos">🌍 Todos os Eventos</option>';
+        eventosUnicos.sort().forEach(ev => {
+            select.innerHTML += `<option value="${ev}">${ev}</option>`;
+        });
+    }
+
+    // FIX: conecta os botões de evento (.event-btn) que já existiam no HTML
+    // mas nunca tinham um listener de clique associado.
+    function configurarBotoesEvento() {
+        document.querySelectorAll('.event-btn').forEach(btn => {
+            if (btn.dataset.bound === '1') return; // evita duplicar listeners
+            btn.dataset.bound = '1';
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.event-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                eventoAtual = btn.getAttribute('data-event') || 'all';
+                carregarCardsSalvos();
+            });
+        });
+    }
+
+    function mudarAbaForm(aba) {
+        document.getElementById('tab-unico').classList.remove('active');
+        document.getElementById('tab-massa').classList.remove('active');
+        document.getElementById('form-individual').style.display = 'none';
+        document.getElementById('form-massa').style.display = 'none';
+
+        if(aba === 'unico') {
+            document.getElementById('tab-unico').classList.add('active');
+            document.getElementById('form-individual').style.display = 'block';
+        } else {
+            document.getElementById('tab-massa').classList.add('active');
+            document.getElementById('form-massa').style.display = 'block';
+        }
+    }
+
+    function importarLinksEmMassa() {
+        const campoTexto = document.getElementById('listaLinksMassa').value;
+        if(!campoTexto.trim()) return;
+
+        const regexLinks = /(https?:\/\/[^\s]+)/g;
+        const linksEncontrados = campoTexto.match(regexLinks);
+
+        if(!linksEncontrados) return;
+
+        linksEncontrados.forEach((url, i) => {
+            const novoObj = { 
+                id: Date.now() + i + Math.floor(Math.random() * 9000), 
+                nome: `Imported Item ${listaDeMarretas.length + 1}`, 
+                valor: '10', 
+                raridade: raridadeAtual, 
+                demanda: '5', 
+                tendencia: 'none', 
+                status: 'none', 
+                templates: 'Stable', 
+                imgSrc: url.trim(),
+                evento: 'Geral',
+                tipo: 'normal',
+                recente: 'nao'
+            };
+            listaDeMarretas.push(novoObj);
+        });
+
+        localStorage.setItem('ftf_custom_v5', JSON.stringify(listaDeMarretas));
+        atualizarFiltroEventosMenu();
+        carregarCardsSalvos();
+        document.getElementById('listaLinksMassa').value = '';
+    }
+
+    function filtrarSubcategoria(sub) {
+        subcategoriaAtual = sub;
+        document.querySelectorAll('.btn-subtab').forEach(btn => btn.classList.remove('active'));
+        const btnAlvo = document.getElementById('sub-' + sub);
+        if(btnAlvo) btnAlvo.classList.add('active');
+        carregarCardsSalvos();
+    }
+
+    function togglePrintMode() {
+        document.body.classList.toggle('hide-mode');
+        const btn = document.getElementById('togglePrintBtn');
+        if (document.body.classList.contains('hide-mode')) {
+            btn.innerText = "Modo Edição";
+        } else {
+            btn.innerText = "Modo Print";
+        }
+        carregarCardsSalvos(); 
+    }
+
+    function toggleControlesCards() {
+        document.body.classList.toggle('ocultar-controles-cards');
+        const btn = document.getElementById('toggleControlesBtn');
+        if (document.body.classList.contains('ocultar-controles-cards')) {
+            btn.innerText = "Mostrar Controles";
+        } else {
+            btn.innerText = "Ocultar Controles";
+        }
+    }
+
+    function salvarNaGaleria() {
+        const jaEstavaEmPrint = document.body.classList.contains('hide-mode');
+        if (!jaEstavaEmPrint) {
+            document.body.classList.add('hide-mode');
+            carregarCardsSalvos();
+        }
+
+        setTimeout(() => {
+            const areaCaptura = document.getElementById('capture-area');
+            html2canvas(areaCaptura, {
+                backgroundColor: "#0f1117",
+                useCORS: true, 
+                scale: 2,
+                windowWidth: 1400
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `FTF-Values-${raridadeAtual}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+                if (!jaEstavaEmPrint) {
+                    document.body.classList.remove('hide-mode');
+                    carregarCardsSalvos();
+                }
+            }).catch(err => {
+                if (!jaEstavaEmPrint) {
+                    document.body.classList.remove('hide-mode');
+                    carregarCardsSalvos();
+                }
+            });
+        }, 400);
+    }
+
+    function criarNovoCard() {
+        const nome = document.getElementById('nomeItem').value;
+        const urlImagem = document.getElementById('linkImagem').value || 'https://via.placeholder.com/150';
+        let valor = document.getElementById('valorItem').value || '10';
+        const raridade = document.getElementById('raridadeItem').value;
+        const demanda = document.getElementById('demandaNota').value;
+        const tendencia = document.getElementById('tendenciaValor').value;
+        const status = document.getElementById('statusItem').value;
+        const estabilidade = document.getElementById('estabilidadeItem').value;
+        const evento = document.getElementById('eventoItem').value || 'Geral';
+        const tipo = document.getElementById('tipoItem').value;
+        const recente = document.getElementById('recenteItem').value;
+
+        if (!nome) return;
+
+        const novoObj = { 
+            id: Date.now(), 
+            nome: nome, 
+            valor: valor.toString().trim(), 
+            raridade: raridade || 'legendary', 
+            demanda: demanda, 
+            tendencia: tendencia, 
+            status: status, 
+            templates: estabilidade, 
+            imgSrc: urlImagem,
+            evento: evento,
+            tipo: tipo,
+            recente: recente
+        };
+        
+        listaDeMarretas.push(novoObj);
+        localStorage.setItem('ftf_custom_v5', JSON.stringify(listaDeMarretas));
+        
+        raridadeAtual = raridade;
+        definirAbaAtivaVisual(raridade);
+        atualizarFiltroEventosMenu();
+        carregarCardsSalvos();
+
+        document.getElementById('nomeItem').value = '';
+        document.getElementById('linkImagem').value = '';
+        document.getElementById('valorItem').value = '';
+        document.getElementById('eventoItem').value = '';
+    }
+
+    function abrirModalEdicaoCompleta(item) {
+        const antigo = document.getElementById('modal-edicao-ftf');
+        if (antigo) antigo.remove();
+
+        const modal = document.createElement('div');
+        modal.id = 'modal-edicao-ftf';
+        modal.style = "position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); display:flex; align-items:center; justify-content:center; z-index:99999;";
+
+        modal.innerHTML = `
+            <div style="background: #161920; border: 1px solid #232836; border-radius: 6px; width: 90%; max-width: 440px; padding: 16px; color: white; max-height: 90vh; overflow-y: auto;">
+                <h3 style="color:#ffb830; margin-bottom:12px; font-size:14px; font-weight:700; text-transform:uppercase;">✏️ Edit Item Parameters</h3>
+                
+                <label style="color:#64748b; font-size:10px; font-weight:700; display:block; margin: 6px 0 2px 0;">ITEM NAME:</label>
+                <input type="text" id="edit-nome" class="input-style" style="width:100%; margin-bottom:8px;" value="${item.nome || ''}">
+
+                <label style="color:#64748b; font-size:10px; font-weight:700; display:block; margin: 6px 0 2px 0;">IMAGE URL:</label>
+                <input type="text" id="edit-img" class="input-style" style="width:100%; margin-bottom:8px;" value="${item.imgSrc || ''}">
+
+                <label style="color:#64748b; font-size:10px; font-weight:700; display:block; margin: 6px 0 2px 0;">VALUE (FV):</label>
+                <input type="text" id="edit-valor" class="input-style" style="width:100%; margin-bottom:8px;" value="${item.valor || ''}">
+
+                <label style="color:#64748b; font-size:10px; font-weight:700; display:block; margin: 6px 0 2px 0;">EVENT CATEGORY:</label>
+                <input type="text" id="edit-evento" class="input-style" style="width:100%; margin-bottom:8px;" value="${item.evento || 'Geral'}">
+
+                <label style="color:#64748b; font-size:10px; font-weight:700; display:block; margin: 6px 0 2px 0;">RARITY TIER:</label>
+                <select id="edit-raridade" class="input-style" style="width:100%; margin-bottom:8px;">
+                    <option value="legendary" ${item.raridade === 'legendary'?'selected':''}>👑 Legendary</option>
+                    <option value="epics" ${item.raridade === 'epics'?'selected':''}>✨ Epic</option>
+                    <option value="rares" ${item.raridade === 'rares'?'selected':''}>💎 Rare</option>
+                    <option value="commons" ${item.raridade === 'commons'?'selected':''}>🍃 Common</option>
+                </select>
+
+                <label style="color:#64748b; font-size:10px; font-weight:700; display:block; margin: 6px 0 2px 0;">SUB-CATEGORY TYPE:</label>
+                <select id="edit-tipo" class="input-style" style="width:100%; margin-bottom:8px;">
+                    <option value="normal" ${item.tipo === 'normal'?'selected':''}>Normal (Com Gema/Par)</option>
+                    <option value="unique" ${item.tipo === 'unique'?'selected':''}>Unique (Sem Gema ou Sem Marreta)</option>
+                    <option value="bundles" ${item.tipo === 'bundles'?'selected':''}>Bundles</option>
+                </select>
+
+                <label style="color:#64748b; font-size:10px; font-weight:700; display:block; margin: 6px 0 2px 0;">NEW ITEMS LISTING?</label>
+                <select id="edit-recente" class="input-style" style="width:100%; margin-bottom:8px;">
+                    <option value="nao" ${item.recente === 'nao'?'selected':''}>Não</option>
+                    <option value="sim" ${item.recente === 'sim'?'selected':''}>Sim (New Items)</option>
+                </select>
+
+                <label style="color:#64748b; font-size:10px; font-weight:700; display:block; margin: 6px 0 2px 0;">DEMAND RATE:</label>
+                <select id="edit-demanda" class="input-style" style="width:100%; margin-bottom:8px;">
+                    ${[5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5, 0].map(v => `<option value="${v}" ${parseFloat(item.demanda) === v ? 'selected':''}>${v}</option>`).join('')}
+                </select>
+
+                <label style="color:#64748b; font-size:10px; font-weight:700; display:block; margin: 6px 0 2px 0;">CHANGE VALUE ARROW:</label>
+                <select id="edit-tendencia" class="input-style" style="width:100%; margin-bottom:8px;">
+                    <option value="none" ${item.tendencia === 'none'?'selected':''}>Estável</option>
+                    <option value="subiu" ${item.tendencia === 'subiu'?'selected':''}>Subiu (↑)</option>
+                    <option value="caiu" ${item.tendencia === 'caiu'?'selected':''}>Caiu (↓)</option>
+                    <option value="corrigido" ${item.tendencia === 'corrigido'?'selected':''}>Corrigido (*)</option>
+                </select>
+
+                <label style="color:#64748b; font-size:10px; font-weight:700; display:block; margin: 6px 0 2px 0;">MARKET STATUS BADGE:</label>
+                <select id="edit-status" class="input-style" style="width:100%; margin-bottom:8px;">
+                    <option value="none" ${item.status === 'none'?'selected':''}>Nenhum</option>
+                    <option value="overpaid" ${item.status === 'overpaid'?'selected':''}>Overpaid For</option>
+                    <option value="underpaid" ${item.status === 'underpaid'?'selected':''}>Underpaid For</option>
+                    <option value="niche" ${item.status === 'niche'?'selected':''}>Niche</option>
+                </select>
+
+                <label style="color:#64748b; font-size:10px; font-weight:700; display:block; margin: 6px 0 2px 0;">STABILITY STATUS:</label>
+                <select id="edit-estabilidade" class="input-style" style="width:100%; margin-bottom:12px;">
+                    ${["Rising","Doing Well","Improving","Stable","Fluctuating","Struggling","Receding","Dropping"].map(est => `<option value="${est}" ${item.templates === est ? 'selected':''}>${est}</option>`).join('')}
+                </select>
+
+                <div style="display: flex; gap: 8px;">
+                    <button id="modal-cancelar" style="flex:1; padding:8px; background:#222733; color:#fff; border:1px solid #2d3445; border-radius:4px; font-weight:600; cursor:pointer;">Cancel</button>
+                    <button id="modal-salvar" style="flex:1; padding:8px; background:#ffb830; color:#000; border:none; border-radius:4px; font-weight:700; cursor:pointer;">Save Changes</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+        document.getElementById('modal-cancelar').onclick = () => modal.remove();
+        document.getElementById('modal-salvar').onclick = () => {
+            item.nome = document.getElementById('edit-nome').value.trim() || item.nome;
+            item.imgSrc = document.getElementById('edit-img').value.trim();
+            item.valor = document.getElementById('edit-valor').value.trim();
+            item.evento = document.getElementById('edit-evento').value.trim() || 'Geral';
+            item.raridade = document.getElementById('edit-raridade').value;
+            item.tipo = document.getElementById('edit-tipo').value;
+            item.recente = document.getElementById('edit-recente').value;
+            item.demanda = document.getElementById('edit-demanda').value;
+            item.tendencia = document.getElementById('edit-tendencia').value;
+            item.status = document.getElementById('edit-status').value;
+            item.templates = document.getElementById('edit-estabilidade').value;
+
+            localStorage.setItem('ftf_custom_v5', JSON.stringify(listaDeMarretas));
+            atualizarFiltroEventosMenu();
+            carregarCardsSalvos();
+            modal.remove();
+        };
+    }
+
+    function renderizarCardHTML(item) {
+        const container = document.getElementById('container-cards');
+        const card = document.createElement("div");
+        card.className = "ftf-item-card";
+
+        const raridadeKey = (item.raridade || 'legendary').toLowerCase();
+        const corRaridade = CORES_RARIDADE[raridadeKey] || '#2d3545';
+        card.setAttribute('data-id', item.id);
+
+        const caminhoImagem = item.imgSrc || 'https://placehold.co/150x110/0f1117/ffffff?text=No+Image';
+        const estabilidadeTexto = item.templates || 'Stable';
+        const corEstabilidade = CORES_ESTABILIDADE[estabilidadeTexto.toLowerCase().trim()] || '#94a3b8';
+
+        card.innerHTML = `
+            <button class="btn-deletar">✕</button>
+            <div class="ftf-card-img-wrapper">
+                <span class="txt-posicao-automatica">#--</span>
+                <img src="${caminhoImagem}" loading="lazy" alt="${item.nome}" onerror="this.src='https://placehold.co/150x110/0f1117/ffffff?text=No+Image'">
+            </div>
+            <div class="ftf-card-info">
+                <h3 class="ftf-item-name">${item.nome}</h3>
+                <span class="ftf-item-rarity" style="color: ${corRaridade};">${item.raridade}</span>
+                
+                <div class="ftf-value-row">
+                    <div>
+                        <div class="ftf-value-label">Value</div>
+                        <span class="box-valor-dinamico"></span>
+                    </div>
+                    <span class="txt-estabilidade" style="color: ${corEstabilidade};">
+                        ${SVG_ESTABILIDADE[estabilidadeTexto] || ""}
+                        <span>${estabilidadeTexto}</span>
+                    </span>
+                </div>
+
+                <div class="box-badge-status"></div>
+
+                <div class="ftf-demand-row">
+                    <span class="ftf-value-label">Demand</span>
+                    <span class="txt-demanda-estrelas"></span>
+                </div>
+
+                <div class="btn-acoes-card">
+                    <div class="btn-acoes-card-row">
+                        <button class="btn-subir" style="flex:1;">▲</button>
+                        <button class="btn-descer" style="flex:1;">▼</button>
+                    </div>
+                    <button class="btn-editar">✏️ Edit Parameters</button>
+                </div>
+            </div>
+        `;
+
+        card.querySelector('.btn-editar').addEventListener('click', () => abrirModalEdicaoCompleta(item));
+        card.querySelector('.btn-deletar').addEventListener('click', () => {
+            if (confirm(`Excluir item "${item.nome}"?`)) {
+                listaDeMarretas = listaDeMarretas.filter(m => m.id !== item.id);
+                card.remove();
+                localStorage.setItem('ftf_custom_v5', JSON.stringify(listaDeMarretas));
+                carregarCardsSalvos();
+            }
+        });
+
+        card.querySelector('.btn-subir').addEventListener('click', () => {
+            const ant = card.previousElementSibling;
+            if (ant) { container.insertBefore(card, ant); reordenarArrayEGuardar(); }
+        });
+
+        card.querySelector('.btn-descer').addEventListener('click', () => {
+            const prox = card.nextElementSibling;
+            if (prox) { container.insertBefore(prox, card); reordenarArrayEGuardar(); }
+        });
+
+        atualizarEstiloValorDoCard(card, item);
+        gerarEstrelasDemanda(card, item.demanda);
+        return card;
+    }
+
+    function filtrarRaridade(raridadeAlvo) {
+        raridadeAtual = raridadeAlvo;
+        definirAbaAtivaVisual(raridadeAlvo);
+
+        let datasSalvas = JSON.parse(localStorage.getItem('ftf_datas_att')) || {};
+        document.getElementById('input-data-att').value = datasSalvas[raridadeAtual] || "July 4th, 2026";
+
+        carregarCardsSalvos();
+    }
+
+    function definirAbaAtivaVisual(raridadeAlvo) {
+        document.querySelectorAll('.btn-aba').forEach(btn => btn.classList.remove('active'));
+        const botaoAtivo = document.getElementById('aba-' + raridadeAlvo);
+        if (botaoAtivo) botaoAtivo.classList.add('active');
+        document.getElementById('titulo-secao').innerText = `${raridadeAlvo.toUpperCase()} ITEMS`;
+    }
+
+        function atualizarEstiloValorDoCard(cardHTML, item) {
+        const containerValor = cardHTML.querySelector('.box-valor-dinamico');
+        const containerBadge = cardHTML.querySelector('.box-badge-status');
+        if (!containerValor) return;
+
+        let badgeTendencia = '';
+        let valorExibido = item.valor || "10";
+        let corDinamica = '#ffb830'; // Cor padrão amarela do FTF
+
+        // Define a mesma cor para o valor e para a seta com base na tendência
+        if (item.tendencia === 'subiu') { 
+            corDinamica = '#47cc6a'; // Verde
+            badgeTendencia = ` <span>↑</span>`; 
+        }
+        else if (item.tendencia === 'caiu') { 
+            corDinamica = '#ff4d4f'; // Vermelho
+            badgeTendencia = ` <span>↓</span>`; 
+        }
+        else if (item.tendencia === 'corrigido') { 
+            corDinamica = '#f2be24'; // Amarelo de correção
+            badgeTendencia = ` <span>*</span>`; 
+        }
+        
+        // Aplica a cor diretamente no container que junta valor + seta
+        containerValor.style.color = corDinamica;
+        containerValor.innerHTML = `${valorExibido}${badgeTendencia}`;
+
+        if (containerBadge) {
+            containerBadge.innerHTML = '';
+            if (item.status === 'overpaid') containerBadge.innerHTML = `<span class="ftf-badge" style="color: #47cc6a; background: rgba(71,204,106,0.1); border: 1px solid rgba(71,204,106,0.2);">Overpaid For</span>`;
+            else if (item.status === 'underpaid') containerBadge.innerHTML = `<span class="ftf-badge" style="color: #ff4d4f; background: rgba(255,77,79,0.1); border: 1px solid rgba(255,77,79,0.2);">Underpaid For</span>`;
+            else if (item.status === 'niche') containerBadge.innerHTML = `<span class="ftf-badge" style="color: #45aaf2; background: rgba(69,170,242,0.1); border: 1px solid rgba(69,170,242,0.2);">Niche</span>`;
+        }
+    }
+
+
+    function gerarEstrelasDemanda(cardHTML, notaEstrelas) {
+        const containerEstrelas = cardHTML.querySelector('.txt-demanda-estrelas');
+        if (!containerEstrelas) return;
+        
+        let notaNum = parseFloat(notaEstrelas) || 0;
+        let estrelasHTML = '';
+        const TAMANHO_ESTRELA = '9px'; 
+
+        const svgEstrelaCheia = `<svg viewBox="0 0 24 24" style="width:${TAMANHO_ESTRELA}; height:${TAMANHO_ESTRELA}; fill:#ffb830;"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.4 8.168L12 18.896l-7.334 3.857 1.4-8.168L.133 9.21l8.2-1.192z"/></svg>`;
+        const svgEstrelaVazia = `<svg viewBox="0 0 24 24" style="width:${TAMANHO_ESTRELA}; height:${TAMANHO_ESTRELA}; fill:none; stroke:#334155; stroke-width:3;"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.4 8.168L12 18.896l-7.334 3.857 1.4-8.168L.133 9.21l8.2-1.192z"/></svg>`;
+for (let i = 1; i <= 5; i++) {
+    if (notaNum >= i) {
+        estrelasHTML += svgEstrelaCheia;
+    } else if (notaNum > i - 1 && notaNum < i) {
+        estrelasHTML += `
+            <span style="display:inline-block; position:relative; width:${TAMANHO_ESTRELA}; height:${TAMANHO_ESTRELA}; vertical-align: middle;">
+                <svg viewBox="0 0 24 24" style="position:absolute; top:0; left:0; width:100%; height:100%; fill:#334155;"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.4 8.168L12 18.896l-7.334 3.857 1.4-8.168L.133 9.21l8.2-1.192z"/></svg>
+                
+                <span style="position:absolute; top:0; left:0; width:50%; height:100%; overflow:hidden;">
+                    <svg viewBox="0 0 24 24" style="width:${TAMANHO_ESTRELA}; height:${TAMANHO_ESTRELA}; fill:#ffb830; display:block;"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.4 8.168L12 18.896l-7.334 3.857 1.4-8.168L.133 9.21l8.2-1.192z"/></svg>
+                </span>
+            </span>
+        `;
+    } else {
+        estrelasHTML += svgEstrelaVazia;
+    }
+ }
+containerEstrelas.innerHTML = estrelasHTML;
+
+}
+        
+    function ordenarEAtualizar() {
+        const criterio = document.getElementById('ordenacaoLista').value;
+
+        if (criterio === 'nome-az') {
+            listaDeMarretas.sort((a, b) => (a.nome || "").localeCompare(b.nome || ""));
+        } 
+        else if (criterio === 'nome-za') {
+            listaDeMarretas.sort((a, b) => (b.nome || "").localeCompare(a.nome || ""));
+        } 
+        else if (criterio === 'valor-alto') {
+            listaDeMarretas.sort((a, b) => {
+                const valA = parseFloat((a.valor || "0").toString().replace(/[^0-9.]/g, '')) || 0;
+                const valB = parseFloat((b.valor || "0").toString().replace(/[^0-9.]/g, '')) || 0;
+                return valB - valA;
+            });
+        } 
+        else if (criterio === 'valor-baixo') {
+            listaDeMarretas.sort((a, b) => {
+                const valA = parseFloat((a.valor || "0").toString().replace(/[^0-9.]/g, '')) || 0;
+                const valB = parseFloat((b.valor || "0").toString().replace(/[^0-9.]/g, '')) || 0;
+                return valA - valB;
+            });
+        } 
+        else if (criterio === 'padrao') {
+            inicializarBancoDados();
+            return;
+        }
+
+        localStorage.setItem('ftf_custom_v5', JSON.stringify(listaDeMarretas));
+        carregarCardsSalvos();
+    }
+
+    function carregarCardsSalvos() {
+        const container = document.getElementById('container-cards');
+        if (!container) return;
+
+        const termoPesquisa = document.getElementById('barraPesquisa').value.toLowerCase();
+
+        const itensFiltrados = listaDeMarretas.filter(item => {
+            const raridadeItem = (item.raridade || 'legendary').toLowerCase();
+            const bateRaridade = raridadeItem === raridadeAtual.toLowerCase();
+            const bateNome = (item.nome || "").toLowerCase().includes(termoPesquisa);
+            const bateEvento = eventoAtual === 'all' || item.evento === eventoAtual;
+            
+            if (!bateRaridade || !bateNome || !bateEvento) return false;
+
+            const valorNum = parseFloat((item.valor || "0").toString().replace(/[^0-9.]/g, '')) || 0;
+            if (subcategoriaAtual === 'recentes' && item.recente !== 'sim') return false;
+            if (subcategoriaAtual === 'unicos' && item.tipo !== 'unique') return false;
+            if (subcategoriaAtual === 'bundles' && item.tipo !== 'bundles') return false;
+            if (subcategoriaAtual === 'high' && valorNum < 90) return false;
+            if (subcategoriaAtual === 'mid' && (valorNum < 30 || valorNum >= 90)) return false;
+            if (subcategoriaAtual === 'low' && (valorNum < 1 || valorNum >= 30)) return false;
+
+            return true;
+        });
+
+        document.getElementById('dash-qtd').innerText = itensFiltrados.length;
+        const totalValorCalculado = itensFiltrados.reduce((acc, obj) => {
+            const v = parseFloat((obj.valor || "0").toString().replace(/[^0-9.]/g, '')) || 0;
+            return acc + v;
+        }, 0);
+        document.getElementById('dash-valor').innerText = totalValorCalculado;
+
+        container.innerHTML = '';
+        const fragment = document.createDocumentFragment();
+
+        itensFiltrados.forEach(item => {
+            const card = renderizarCardHTML(item); 
+            if (card) fragment.appendChild(card);
+        });
+
+        container.appendChild(fragment);
+        atualizarNumbersVisuais();
+    }
+
+    function reordenarArrayEGuardar() {
+        let listaLimpa = listaDeMarretas.filter(item => (item.raridade || 'legendary') !== raridadeAtual);
+        let itensReordenadosDaAba = [];
+
+        document.querySelectorAll('#container-cards .ftf-item-card').forEach((cardHTML) => {
+            const id = parseInt(cardHTML.getAttribute('data-id'));
+            const correspondente = listaDeMarretas.find(m => m.id === id);
+            if (correspondente) itensReordenadosDaAba.push(correspondente);
+        });
+        
+        listaDeMarretas = [...listaLimpa, ...itensReordenadosDaAba];
+        localStorage.setItem('ftf_custom_v5', JSON.stringify(listaDeMarretas));
+        atualizarNumbersVisuais();
+    }
+
+    function atualizarNumbersVisuais() {
+        document.querySelectorAll('#container-cards .ftf-item-card').forEach((cardHTML, index) => {
+            const caixaTextoPosicao = cardHTML.querySelector('.txt-posicao-automatica');
+            if (caixaTextoPosicao) caixaTextoPosicao.innerText = `#${index + 1}`;
+        });
+    }
+
+    function exportarLista() {
+        navigator.clipboard.writeText(JSON.stringify(listaDeMarretas, null, 2)).then(() => {
+            alert("Backup copiado!");
+        });
+    }
+
+    window.onload = inicializarBancoDados;
+</script>
+</body>
+    </html>
